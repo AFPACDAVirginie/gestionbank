@@ -17,7 +17,7 @@ CREATE TABLE account (
     id SERIAL PRIMARY KEY,
     client_id uuid NOT NULL,
     balance DECIMAL(15,2) NOT NULL DEFAULT 0.00,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    creationtime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     active BOOLEAN NOT NULL DEFAULT TRUE,
 
     -- Définition de la contrainte de clé étrangère
