@@ -50,12 +50,6 @@ SELECT first_name, last_name, to_date(birthdate, 'YYYY-MM-DD'), gen_random_uuid(
         ('Irina', 'Kuznetsova', '1996-01-25', 'irina.kuznetsova@example.com'),
         ('José', 'Gutierrez', '1979-11-15', 'jose.gutierrez@example.com'),
         ('Amira', 'Said', '1985-03-05', 'amira.said@example.com'),
-        ('Federico', 'Romano', '1992-06-20', 'federico.romano@example.com'),
-        ('Nadia', 'Omar', '1978-08-10', 'nadia.omar@example.com'),
-        ('André', 'Moreira', '1991-09-30', 'andre.moreira@example.com'),
-        ('Hiroko', 'Kobayashi', '1987-02-10', 'hiroko.kobayashi@example.com'),
-        ('Tariq', 'Choudhury', '1994-04-01', 'tariq.choudhury@example.com'),
-        ('Catarina', 'Santos', '1976-10-20', 'catarina.santos@example.com'),
-        ('Jin', 'Kim', '1990-11-10', 'jin.kim@example.com')
+        ('Federico', 'Romano', '1992-06-20', 'federico.romano@example.com')
 ) AS clients (first_name, last_name, birthdate, email);
 

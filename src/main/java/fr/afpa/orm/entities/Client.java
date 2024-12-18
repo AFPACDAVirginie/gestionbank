@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name="client")
-public class Client {
+public class Client extends Person {
 
     /**
      * Identifiant unique de l'utilisateur
@@ -23,26 +23,6 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-      /**
-     * Prénom du propriétaire
-     */
-    @Column(name = "first_name")
-    private String firstName;
-    /**
-     * Nom du propriétaire
-     */
-    @Column(name = "last_name")
-    private String lastName;
-    /**
-     * Adresse email (unique) du propriétaire
-     */
-    @Column(name = "email")
-    private String email;
-    /**
-     * Date d'anniversaire du prop
-     */
-    @Column(name = "birthdate")
-    private LocalDate birthdate;
 
     /**
      * Association de type "OneToMany" : une personne peut avoir plusieurs comptes
@@ -50,6 +30,15 @@ public class Client {
     @JsonIgnore
     @OneToMany(targetEntity = Account.class, mappedBy = "owner")
     private List<Account> accounts;
+
+    /**
+     * le conseiller qui suit ce client
+     */
+    @JsonBackReference // Permet d'éviter une boucle infinie dans les sérialisations JSON
+    @ManyToOne
+    @JoinColumn(name = "advisor_id", nullable = false)
+    private BankAdvisor owner;
+
 
     // Relation Many-to-Many avec Insurance
     @ManyToMany
@@ -70,38 +59,6 @@ public class Client {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDate getBirthdate() {
-        return birthdate;
-    }
-
-    public void setBirthdate(LocalDate birthdate) {
-        this.birthdate = birthdate;
     }
 
     public List<Account> getAccounts() {

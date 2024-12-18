@@ -30,20 +30,20 @@ public class ClientRestController {
 	public List<ClientDto> getAllClients() {
 		List<Client> clients = clientService.getAllClients();
 		return clients.stream()
-			.map(client -> new ClientDto(client.getId(), client.getFirstName(), client.getLastName(), client.getEmail(), client.getBirthdate()))
+			.map(client -> new ClientDto(client.getId(), client.getFirstName(), client.getLastName(), client.getEmail(), client.getBirthDate()))
 			.collect(Collectors.toList());
 	}
 
 	@GetMapping("/{id}")
 	public Optional<ClientDto> getClient(@PathVariable UUID id) {
 		Optional<Client> client = clientService.getClientById(id);
-		return client.map(c -> new ClientDto(c.getId(), c.getFirstName(), c.getLastName(), c.getEmail(), c.getBirthdate()));
+		return client.map(c -> new ClientDto(c.getId(), c.getFirstName(), c.getLastName(), c.getEmail(), c.getBirthDate()));
 	}
 
 	@GetMapping("/sorted")
 	public List<ClientDto> getClientsSortedByLastName() {
 		return clientService.getClientsByLastNameAsc().stream()
-				.map(client -> new ClientDto(client.getId(), client.getFirstName(), client.getLastName(), client.getEmail(), client.getBirthdate()))
+				.map(client -> new ClientDto(client.getId(), client.getFirstName(), client.getLastName(), client.getEmail(), client.getBirthDate()))
 				.collect(Collectors.toList());
 	}
 

@@ -39,3 +39,14 @@ CREATE TABLE client_insurance (
     FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE,
     FOREIGN KEY (insurance_id) REFERENCES insurance(id) ON DELETE CASCADE
 );
+
+CREATE TABLE advisor (
+    id uuid PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) UNIQUE NOT NULL,
+    birthdate DATE NOT NULL,
+    hiringDate DATE NOT NULL,
+    specialty VARCHAR(50) NOT NULL
+)
+
