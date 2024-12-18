@@ -1,44 +1,62 @@
 package fr.afpa.orm.web.controllers;
 
+import fr.afpa.orm.dto.ClientDto;
 import fr.afpa.orm.entities.Client;
-import fr.afpa.orm.repositories.ClientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+import fr.afpa.orm.entities.Insurance;
+import fr.afpa.orm.service.IClientService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clients")
 public class ClientRestController {
 
-private final ClientRepository clientRepository;
+	private final IClientService clientService;
 
 	@Autowired
-	public ClientRestController(ClientRepository clientRepository) {
-		this.clientRepository = clientRepository;
+	public ClientRestController(IClientService clientService) {
+		this.clientService = clientService;
 	}
 
 	@GetMapping
-	public List<Client> getAllClients() {
-		return (List<Client>) clientRepository.findAll();
+	public List<ClientDto> getAllClients() {
+		List<Client> clients = clientService.getAllClients();
+		return clients.stream()
+			.map(client -> new ClientDto(client.getId(), client.getFirstName(), client.getLastName(), client.getEmail(), client.getBirthdate()))
+			.collect(Collectors.toList());
 	}
 
-	// Méthode pour récupérer un client par ID
 	@GetMapping("/{id}")
-	public List<Client> getClients(@PathVariable int id) {
-		Optional<Client> client = clientRepository.findById(id);
-		List<Client> clients = new ArrayList<>();
-		if (client.isPresent()) {
-			clients.add(client.get());
-		} else {
-			return null; // ou retournez une réponse appropriée comme une exception
-		}
-		return clients;
+	public Optional<ClientDto> getClient(@PathVariable UUID id) {
+		Optional<Client> client = clientService.getClientById(id);
+		return client.map(c -> new ClientDto(c.getId(), c.getFirstName(), c.getLastName(), c.getEmail(), c.getBirthdate()));
 	}
+
+	@GetMapping("/sorted")
+	public List<ClientDto> getClientsSortedByLastName() {
+		return clientService.getClientsByLastNameAsc().stream()
+				.map(client -> new ClientDto(client.getId(), client.getFirstName(), client.getLastName(), client.getEmail(), client.getBirthdate()))
+				.collect(Collectors.toList());
+	}
+
+	@PostMapping("/{clientId}/subscribe/{insuranceId}")
+	public String subscribeToInsurance(@PathVariable UUID clientId, @PathVariable Long insuranceId) {
+		clientService.subscribeClientToInsurance(clientId, insuranceId);
+		return "Souscription réussie";
+	}
+	// Endpoint pour récupérer les assurances souscrites par un client
+	@GetMapping("/{clientId}/insurances")
+	public Set<String> getClientInsurances(@PathVariable UUID clientId) {
+		// Appel du service pour récupérer les assurances
+		return clientService.getClientInsurances(clientId);
+	}
+
 }

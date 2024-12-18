@@ -1,19 +1,15 @@
 package fr.afpa.orm.entities;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="client")
@@ -54,6 +50,15 @@ public class Client {
     @JsonIgnore
     @OneToMany(targetEntity = Account.class, mappedBy = "owner")
     private List<Account> accounts;
+
+    // Relation Many-to-Many avec Insurance
+    @ManyToMany
+    @JoinTable(
+            name = "client_insurance",   // Nom de la table de liaison
+            joinColumns = @JoinColumn(name = "client_id"),   // Colonne pour la clé étrangère client
+            inverseJoinColumns = @JoinColumn(name = "insurance_id")  // Colonne pour la clé étrangère assurance
+    )
+    private Set<Insurance> insurances = new HashSet<>();
 
     public Client() {
         // Constructeur vide.
@@ -105,5 +110,13 @@ public class Client {
 
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public Set<Insurance> getInsurances() {
+        return insurances;
+    }
+
+    public void setInsurances(Set<Insurance> insurances) {
+        this.insurances = insurances;
     }
 }

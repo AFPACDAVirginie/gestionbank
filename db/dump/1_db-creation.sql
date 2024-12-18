@@ -1,6 +1,7 @@
 
 DROP TABLE if exists public.account CASCADE;
 DROP TABLE if exists public.client CASCADE;
+DROP TABLE if exists public.insurance CASCADE;
 
 /* TODO : ajouter la création de la table "client" */
 
@@ -24,4 +25,17 @@ CREATE TABLE account (
     CONSTRAINT fk_client FOREIGN KEY (client_id)
         REFERENCES public.client(id)
         ON DELETE CASCADE  -- Si un client est supprimé, supprimer tous ses comptes
+);
+
+CREATE TABLE insurance (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE client_insurance (
+    client_id uuid,
+    insurance_id INT,
+    PRIMARY KEY (client_id, insurance_id),
+    FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE,
+    FOREIGN KEY (insurance_id) REFERENCES insurance(id) ON DELETE CASCADE
 );

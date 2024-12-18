@@ -23,6 +23,8 @@ public class ClientDto {
 		this.birthdate = birthdate;
 	}
 
+
+
 	public UUID getId() {
 		return id;
 	}
