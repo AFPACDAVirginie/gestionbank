@@ -3,10 +3,9 @@ package fr.afpa.orm.web.controllers;
 import fr.afpa.orm.dto.ClientDto;
 import fr.afpa.orm.entities.Client;
 
-import fr.afpa.orm.entities.Insurance;
+
 import fr.afpa.orm.service.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

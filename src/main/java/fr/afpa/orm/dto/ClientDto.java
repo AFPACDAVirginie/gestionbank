@@ -11,6 +11,7 @@ public class ClientDto {
 	private String email;
 	private LocalDate birthdate;
 
+
 	public ClientDto() {
 
 	}
@@ -21,6 +22,7 @@ public class ClientDto {
 		this.lastName = lastName;
 		this.email = email;
 		this.birthdate = birthdate;
+
 	}
 
 
@@ -55,6 +57,8 @@ public class ClientDto {
 	public void setBirthdate(LocalDate birthdate) {
 		this.birthdate = birthdate;
 	}
+
+
 
 	@Override
 	public String toString() {

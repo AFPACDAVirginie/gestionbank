@@ -2,6 +2,8 @@
 DROP TABLE if exists public.account CASCADE;
 DROP TABLE if exists public.client CASCADE;
 DROP TABLE if exists public.insurance CASCADE;
+DROP TABLE if exists public.bankadvisor CASCADE;
+DROP TABLE if exists public.advisor_specialties;
 
 /* TODO : ajouter la création de la table "client" */
 
@@ -11,7 +13,8 @@ CREATE TABLE client (
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
-    birthdate DATE NOT NULL
+    birthdate DATE NOT NULL,
+    bankadvisor_id uuid NOT NULL
 );
 -- Création de la table "account"
 CREATE TABLE account (
@@ -40,13 +43,22 @@ CREATE TABLE client_insurance (
     FOREIGN KEY (insurance_id) REFERENCES insurance(id) ON DELETE CASCADE
 );
 
-CREATE TABLE advisor (
+CREATE TABLE bankadvisor (
     id uuid PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
     birthdate DATE NOT NULL,
-    hiringDate DATE NOT NULL,
-    specialty VARCHAR(50) NOT NULL
-)
+    hiring_date DATE NOT NULL
+);
+
+CREATE TABLE specialties (
+     id SERIAL PRIMARY KEY,
+     bankadvisor_id uuid,
+     specialty VARCHAR(255) NOT NULL,
+     FOREIGN KEY (bankadvisor_id) REFERENCES bankadvisor(id)
+);
+
+
+
 

@@ -1,30 +1,31 @@
 package fr.afpa.orm.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "advisor")
+@Table(name = "bankadvisor")
 public class BankAdvisor extends Person {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	@Column(name = "hiringDate")
+	@Column(name = "hiring_date")
 	private LocalDate hiringDate;
 
 	//Specialty : Assurance Placement Prêt immobilier Crédit consommation
-	public enum Specialty {
-		Assurance, Placement_Prêt, immobilier, Crédit_consommation
-	}
+	// Relation OneToMany : un bankadvisor peut avoir plusieurs specialties
+	@OneToMany(mappedBy = "bankAdvisor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference
+	private List<Specialty> specialties = new ArrayList<>();
 
-	@Column(name = "specialty")
-	private Specialty specialty;
 
 	/**
 	 * Association de type "OneToMany" : un conseiller peut suivre plusieurs clients
@@ -53,11 +54,19 @@ public class BankAdvisor extends Person {
 		this.hiringDate = hiringDate;
 	}
 
-	public Specialty getSpecialty() {
-		return specialty;
+	public List<Client> getClients() {
+		return clients;
 	}
 
-	public void setSpecialty(Specialty specialty) {
-		this.specialty = specialty;
+	public void setClients(List<Client> clients) {
+		this.clients = clients;
+	}
+
+	public List<Specialty> getSpecialties() {
+		return specialties;
+	}
+
+	public void setSpecialties(List<Specialty> specialties) {
+		this.specialties = specialties;
 	}
 }

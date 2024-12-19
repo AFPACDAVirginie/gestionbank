@@ -2,8 +2,8 @@ package fr.afpa.orm.service;
 
 import fr.afpa.orm.entities.Client;
 import fr.afpa.orm.entities.Insurance;
-import fr.afpa.orm.repositories.ClientRepository;
-import fr.afpa.orm.repositories.InsuranceRepository;
+import fr.afpa.orm.repositories.IClientRepository;
+import fr.afpa.orm.repositories.IInsuranceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +17,18 @@ import java.util.stream.StreamSupport;
 @Service
 public class ClientService implements IClientService {
 
-	private final ClientRepository clientRepository;
+	private final IClientRepository IClientRepository;
 
 	@Autowired
-	public ClientService(ClientRepository clientRepository) {
-		this.clientRepository = clientRepository;
+	public ClientService(IClientRepository IClientRepository) {
+		this.IClientRepository = IClientRepository;
 	}
 	@Autowired
-	private InsuranceRepository insuranceRepository;
+	private IInsuranceRepository IInsuranceRepository;
 
 	@Override
 	public List<Client> getAllClients() {
-		Iterable<Client> allClients = clientRepository.findAll();
+		Iterable<Client> allClients = IClientRepository.findAll();
 		return StreamSupport.stream(allClients.spliterator(), false)
 				.collect(Collectors.toList());
 	}
@@ -40,22 +40,22 @@ public class ClientService implements IClientService {
 
 	@Override
 	public List<Client> getClientsByLastNameAsc() {
-		return (List<Client>) clientRepository.findAllByOrderByLastNameAsc();
+		return (List<Client>) IClientRepository.findAllByOrderByLastNameAsc();
 	}
 
 	@Override
 	public void subscribeClientToInsurance(UUID clientId, Long insuranceId) {
-		Client client = clientRepository.findById(clientId).orElseThrow(() -> new RuntimeException("Client not found"));
-		Insurance insurance = insuranceRepository.findById(Math.toIntExact(insuranceId)).orElseThrow(() -> new RuntimeException("Insurance not found"));
+		Client client = IClientRepository.findById(clientId).orElseThrow(() -> new RuntimeException("Client not found"));
+		Insurance insurance = IInsuranceRepository.findById(Math.toIntExact(insuranceId)).orElseThrow(() -> new RuntimeException("Insurance not found"));
 
 		client.getInsurances().add(insurance);  // Ajouter l'assurance au client
-		clientRepository.save(client);  // Sauvegarder le client (avec les assurances mises à jour)
+		IClientRepository.save(client);  // Sauvegarder le client (avec les assurances mises à jour)
 	}
 
 	@Override
 	public Set<String> getClientInsurances(UUID clientId) {
 		// Récupérer le client
-		Client client = clientRepository.findById(clientId)
+		Client client = IClientRepository.findById(clientId)
 				.orElseThrow(() -> new RuntimeException("Client not found"));
 
 		// Retourner les noms des assurances souscrites par ce client

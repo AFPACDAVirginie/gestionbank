@@ -1,6 +1,6 @@
 -- Génération des 100 utilisateurs
-INSERT INTO public."client" (first_name, last_name, birthdate, id, email)
-SELECT first_name, last_name, to_date(birthdate, 'YYYY-MM-DD'), gen_random_uuid(), email FROM (
+INSERT INTO public."client" (first_name, last_name, birthdate, id, email, bankadvisor_id)
+SELECT clients.first_name, clients.last_name, to_date(clients.birthdate, 'YYYY-MM-DD'), gen_random_uuid(), clients.email, bankadvisor.id AS bankadvisor_id FROM (
     VALUES
         ('John', 'Smith', '1990-05-15', 'john.smith@example.com'),
         ('Emma', 'Johnson', '1985-12-20', 'emma.johnson@example.com'),
@@ -51,5 +51,10 @@ SELECT first_name, last_name, to_date(birthdate, 'YYYY-MM-DD'), gen_random_uuid(
         ('José', 'Gutierrez', '1979-11-15', 'jose.gutierrez@example.com'),
         ('Amira', 'Said', '1985-03-05', 'amira.said@example.com'),
         ('Federico', 'Romano', '1992-06-20', 'federico.romano@example.com')
-) AS clients (first_name, last_name, birthdate, email);
+) AS clients (first_name, last_name, birthdate, email)
+
+JOIN public.bankadvisor AS bankadvisor ON TRUE
+ORDER BY RANDOM()
+LIMIT 100
+ON CONFLICT(email) DO NOTHING;
 

@@ -1,6 +1,5 @@
 package fr.afpa.orm.entities;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +35,7 @@ public class Client extends Person {
      */
     @JsonBackReference // Permet d'éviter une boucle infinie dans les sérialisations JSON
     @ManyToOne
-    @JoinColumn(name = "advisor_id", nullable = false)
+    @JoinColumn(name = "bankadvisor_id", nullable = false)
     private BankAdvisor owner;
 
 
@@ -76,4 +75,5 @@ public class Client extends Person {
     public void setInsurances(Set<Insurance> insurances) {
         this.insurances = insurances;
     }
+
 }

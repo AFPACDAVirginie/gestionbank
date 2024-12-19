@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ClientRepository extends CrudRepository<Client, Integer> {
+public interface IClientRepository extends CrudRepository<Client, Integer> {
 
 
 	Iterable<Client> findAllByOrderByLastNameAsc();

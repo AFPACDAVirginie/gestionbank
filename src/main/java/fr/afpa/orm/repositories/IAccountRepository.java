@@ -6,15 +6,12 @@ import org.springframework.stereotype.Repository;
 
 import fr.afpa.orm.entities.Account;
 
-import java.util.List;
-import java.util.Optional;
-
 /**
  * Implémenter un "repository" (similaire à un DAO) permettant d'interagir avec les données de la BDD
  * Tutoriel -> https://www.geeksforgeeks.org/spring-boot-crudrepository-with-example/
  */
 @Repository
-public interface AccountRepository extends CrudRepository<Account, Long> {
+public interface IAccountRepository extends CrudRepository<Account, Long> {
 	/**
 	 * @return Tous les comptes enregistrés
 	 */

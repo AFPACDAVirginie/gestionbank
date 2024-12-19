@@ -1,22 +1,15 @@
 package fr.afpa.orm.web.controllers;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import fr.afpa.orm.dto.AccountDto;
 import fr.afpa.orm.entities.Account;
-import fr.afpa.orm.repositories.AccountRepository;
+import fr.afpa.orm.repositories.IAccountRepository;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
@@ -27,16 +20,16 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AccountRestController {
 
 
-private final AccountRepository accountRepository;
+private final IAccountRepository IAccountRepository;
     /** 
      * Implémenter un constructeur
      *  
-     * Injecter {@link AccountRepository} en dépendance par injection via le constructeur
-     * Plus d'informations -> https://keyboardplaying.fr/blogue/2021/01/spring-injection-constructeur/
+     * Injecter {@link IAccountRepository} en dépendance par injection via le constructeur
+     * Plus d'informations https://keyboardplaying.fr/blogue/2021/01/spring-injection-constructeur/
      */
     @Autowired
-    public AccountRestController(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    public AccountRestController(IAccountRepository IAccountRepository) {
+        this.IAccountRepository = IAccountRepository;
     }
 
 
@@ -44,14 +37,14 @@ private final AccountRepository accountRepository;
     /**
      * Implémenter une méthode qui traite les requêtes GET et qui renvoie une liste de comptes
      *
-     * Attention, il manque peut être une annotation :)
+     * Attention, il manque peut-être une annotation :)
      */
     @GetMapping
     public List<Account> getAll() {
         // Récupération des compte provenant d'un repository
        
         // Renvoyer les objets de la classe "Account"
-        return (List<Account>) accountRepository.findAll();
+        return (List<Account>) IAccountRepository.findAll();
     }
 
     /**
@@ -61,7 +54,7 @@ private final AccountRepository accountRepository;
     @GetMapping("/{id}")
     public ResponseEntity<Account> getOne(@PathVariable long id) {
         // Compléter le code
-        Optional<Account> account = accountRepository.findById(id);
+        Optional<Account> account = IAccountRepository.findById(id);
         if (account.isPresent()) {
             return new ResponseEntity<>(account.get(), HttpStatus.OK);
         } else {
@@ -78,7 +71,7 @@ private final AccountRepository accountRepository;
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Account create(@RequestBody Account account) {
-        return accountRepository.save(account);
+        return IAccountRepository.save(account);
     }
 
     /**
@@ -91,10 +84,10 @@ private final AccountRepository accountRepository;
 //    }
 @PutMapping("/{id}")
 public ResponseEntity<Account> update(@PathVariable long id, @RequestBody Account account) {
-    Optional<Account> existingAccount = accountRepository.findById(id);
+    Optional<Account> existingAccount = IAccountRepository.findById(id);
     if (existingAccount.isPresent()) {
         account.setId(id);  // Assurez-vous que l'id reste intact
-        Account updatedAccount = accountRepository.save(account);
+        Account updatedAccount = IAccountRepository.save(account);
         return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
     } else {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -113,9 +106,9 @@ public ResponseEntity<Account> update(@PathVariable long id, @RequestBody Accoun
 //    }
 @DeleteMapping("/{id}")
 public ResponseEntity<Void> remove(@PathVariable long id, HttpServletResponse response) {
-    Optional<Account> account = accountRepository.findById(id);
+    Optional<Account> account = IAccountRepository.findById(id);
     if (account.isPresent()) {
-        accountRepository.delete(account.get());
+        IAccountRepository.delete(account.get());
         response.setStatus(HttpServletResponse.SC_NO_CONTENT); // 204 No Content
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     } else {
