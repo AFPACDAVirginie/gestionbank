@@ -1,4 +1,4 @@
-package fr.afpa.orm.web.controllers;
+package fr.afpa.orm.web.controller;
 
 import java.util.List;
 import java.util.Optional;

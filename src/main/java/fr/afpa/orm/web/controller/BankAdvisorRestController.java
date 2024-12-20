@@ -1,4 +1,4 @@
-package fr.afpa.orm.web.controllers;
+package fr.afpa.orm.web.controller;
 
 import fr.afpa.orm.entities.BankAdvisor;
 import fr.afpa.orm.service.IBankAdvisorService;
@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController

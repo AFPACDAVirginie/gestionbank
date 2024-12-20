@@ -1,4 +1,4 @@
-package fr.afpa.orm.web.controllers;
+package fr.afpa.orm.web.controller;
 
 import fr.afpa.orm.dto.ClientDto;
 import fr.afpa.orm.entities.Client;
