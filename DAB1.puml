@@ -1,22 +1,16 @@
 @startuml
-'https://plantuml.com/use-case-diagram
+top to bottom direction
+skinparam packageStyle rectangle
 
-:Main Admin: as Admin
-(Use the application) as (Use)
+actor "Customer" as User
+rectangle "Authorization System" as AuthSystem {
+}
 
-User -> (Start)
-User --> (Use)
+rectangle DAB {
+  usecase "Withdraw Money" as Withdraw
+}
 
-Admin ---> (Use)
+User --> Withdraw : "Request Withdrawal"
+Withdraw --> AuthSystem : "Check Authorization"
 
-note right of Admin : This is an example.
-
-note right of (Use)
-A note can also
-be on several lines
-end note
-
-note "This note is connected\nto several objects." as N2
-(Start) .. N2
-N2 .. (Use)
 @enduml
