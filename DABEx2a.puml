@@ -1,0 +1,21 @@
+@startuml
+top to bottom direction
+skinparam actorStyle awesome
+actor "Porteur de carte" as Cardholder
+actor "Système d'Autorisation VISA" as VISA
+
+package "DAB" {
+  usecase "Introduire la carte Visa" as UC1
+  usecase "Vérifier la carte Visa" as UC2
+  usecase "Rejeter la carte Visa" as EX2a
+}
+
+Cardholder --> UC1 : Introduit la carte
+
+
+UC1 <|-- UC2 : Vérifie la carte
+EX2a <|-- UC2
+EX2a --> Cardholder #line:red;line.bold;text:red  : Carte non reconnue
+
+
+@enduml

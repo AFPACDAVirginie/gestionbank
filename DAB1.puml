@@ -1,16 +1,37 @@
 @startuml
 top to bottom direction
-skinparam packageStyle rectangle
+skinparam actorStyle awesome
+actor "Porteur de carte" as Cardholder
+actor "Système d'Autorisation VISA" as VISA
 
-actor "Customer" as User
-rectangle "Authorization System" as AuthSystem {
+package "DAB" {
+  usecase "Introduire la carte Visa" as UC1
+  usecase "Vérifier la carte Visa" as UC2
+  usecase "Demander code d'identification" as UC3
+  usecase "Entrer le code d'identification" as UC4
+  usecase "Valider le code d'identification" as UC5
+  usecase "Demander autorisation au Système d'Autorisation VISA" as UC6
+  usecase "Demander montant du retrait" as UC7
+  usecase "Vérifier le montant" as UC8
+  usecase "Informer le Système d'Autorisation" as UC9
+  usecase "Mettre à jour le solde" as UC10
+  usecase "Autoriser la remise des espèces" as UC11
+  usecase "Délivrer les espèces" as UC12
 }
 
-rectangle DAB {
-  usecase "Withdraw Money" as Withdraw
-}
+Cardholder --> UC1 : Introduit la carte
+Cardholder --> UC4 : Entre le code
+Cardholder --> UC7 : Saisit le montant désiré
 
-User --> Withdraw : "Request Withdrawal"
-Withdraw --> AuthSystem : "Check Authorization"
+UC1 <|-- UC2 : Vérifie la carte
+UC2 <|-- UC3 : Demande le code
+UC4 <.. UC5 : Valide le code
+UC6 --|> VISA : Demande autorisation
+UC7 -|> UC8 : Vérifie le montant
+UC9 --|> VISA : Informe du montant
+UC8 -> UC12 : Délivre les espèces
+
+UC10 <-- VISA : Met à jour le solde
+UC11 <-- VISA : Autorise la remise des espèces
 
 @enduml

@@ -1,22 +1,35 @@
 @startuml
-'https://plantuml.com/use-case-diagram
+left to right direction
+ skinparam packageStyle rectangle
 
-:Main Admin: as Admin
-(Use the application) as (Use)
+ actor "Customer" as User
+ actor "Authorization System" as AuthSystem
 
-User -> (Start)
-User --> (Use)
 
-Admin ---> (Use)
+ package DAB {
+   usecase "Insert Visa card" as InsertCard
+   usecase "Check Visa card" as CheckCard
+   usecase "Provide identification code" as ProvidePIN
+   usecase "Validation identification code" as ValidationPIN
+   usecase "Request authorization" as Request
+   usecase "Weekly balance" as Balance
+   usecase "Provide amount" as Amount
+   usecase "Validation amount" as ValidationAmount
+   usecase "Balance update"
+   usecase "cash delivery" as Cash
+ }
 
-note right of Admin : This is an example.
-
-note right of (Use)
-A note can also
-be on several lines
-end note
-
-note "This note is connected\nto several objects." as N2
-(Start) .. N2
-N2 .. (Use)
+ User --> InsertCard
+ InsertCard <. CheckCard
+ User --> ProvidePIN : "Enter code"
+ ProvidePIN <. ValidationPIN : "extend"
+ Request --> AuthSystem
+ AuthSystem --> Balance : "Agreement ok"
+ Amount --> User : "Ask amount"
+ User --> Amount : "Enter amount"
+ Amount <. ValidationAmount : extend
+ ValidationAmount --> AuthSystem : "authorized amount"
+ ValidationAmount ..> "Balance update" : include
+ AuthSystem --> Cash
+ Cash --> User
 @enduml
